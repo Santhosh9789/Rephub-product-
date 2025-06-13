@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80" # Map host port 3000 to container port 80 (Nginx default)
+    volumes:
+      - ./frontend/src:/app/src # For development hot-reloading, if configured
+    environment:
+      - NODE_ENV=development # Example environment variable
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001" # Map host port 3001 to container port 3001
+    volumes:
+      - ./backend:/app # For development, sync local changes
+      - /app/node_modules # Don't map local node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+volumes:
+  node_modules_frontend: # Not strictly necessary with multi-stage build but good for explicitness
+  node_modules_backend:
